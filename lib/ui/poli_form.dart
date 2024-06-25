@@ -19,8 +19,8 @@ class _PoliFormState extends State<PoliForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Tambah Poli"),
-        backgroundColor: Color.fromRGBO(5, 5, 237, 0.612),
+        title: const Text("Tambah Mobil"),
+        backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -35,7 +35,7 @@ class _PoliFormState extends State<PoliForm> {
 
   _fieldNamaPoli() {
     return TextField(
-      decoration: const InputDecoration(labelText: "Nama Poli"),
+      decoration: const InputDecoration(labelText: "Nama Mobil"),
       controller: _namaPoliCtrl,
     );
   }

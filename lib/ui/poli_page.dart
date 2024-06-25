@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter/widgets.dart';
 import 'package:klinik_app_fauzan/model/poli.dart';
 import 'package:klinik_app_fauzan/ui/poli_form.dart';
 import 'poli_detail.dart';
@@ -25,9 +24,19 @@ class _PoliPageState extends State<PoliPage> {
     return Scaffold(
       drawer: Sidebar(),
       appBar: AppBar(
-        title: const Text("Data Poli"),
-        backgroundColor: Color.fromRGBO(5, 5, 237, 0.612),
+        title: const Text("Data Mobil"),
+        backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              // Action to be performed when the search icon is pressed
+              showSearch(
+                context: context,
+                delegate: PoliSearchDelegate(),
+              );
+            },
+          ),
           GestureDetector(
             child: const Icon(Icons.add),
             onTap: () {
@@ -44,13 +53,13 @@ class _PoliPageState extends State<PoliPage> {
             return Text(snapshot.error.toString());
           }
           if (snapshot.connectionState != ConnectionState.done) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
           if (!snapshot.hasData &&
               snapshot.connectionState == ConnectionState.done) {
-            return Text('Data Kosong');
+            return const Text('Data Kosong');
           }
 
           return ListView.builder(
@@ -61,6 +70,45 @@ class _PoliPageState extends State<PoliPage> {
           );
         },
       ),
+    );
+  }
+}
+
+class PoliSearchDelegate extends SearchDelegate {
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: const Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Center(
+      child: Text('Search result for: $query'),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // You can implement search suggestions here if needed
+    return Center(
+      child: Text('Search suggestion for: $query'),
     );
   }
 }

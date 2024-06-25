@@ -23,15 +23,15 @@ class Sidebar extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.accessible),
-            title: Text("Poli"),
+            leading: Icon(Icons.car_rental_rounded),
+            title: Text("Data Mobil"),
             onTap: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => PoliPage()));
             },
           ),
           ListTile(
-            leading: Icon(Icons.people),
+            leading: Icon(Icons.people_alt_rounded),
             title: Text("Pegawai"),
             onTap: () {
               Navigator.push(
@@ -40,7 +40,7 @@ class Sidebar extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.account_box_sharp),
-            title: Text("Pasien"),
+            title: Text("Pelanggan"),
             onTap: () {},
           ),
           ListTile(

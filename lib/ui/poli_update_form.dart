@@ -34,7 +34,7 @@ class _PoliUpdateFormState extends State<PoliUpdateForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Ubah Poli"),
+        title: const Text("Ubah Mobil"),
         backgroundColor: Color.fromRGBO(5, 5, 237, 0.612),
       ),
       body: SingleChildScrollView(
@@ -50,7 +50,7 @@ class _PoliUpdateFormState extends State<PoliUpdateForm> {
 
   _fieldNamaPoli() {
     return TextField(
-      decoration: const InputDecoration(labelText: "Nama Poli"),
+      decoration: const InputDecoration(labelText: "Nama Mobil"),
       controller: _namaPoliCtrl,
     );
   }
@@ -68,6 +68,6 @@ class _PoliUpdateFormState extends State<PoliUpdateForm> {
                     builder: (context) => PoliDetail(poli: value)));
           });
         },
-        child: const Text("Simpan Perubahan"));
+        child: const Text("Simpan"));
   }
 }

@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 
 final Dio dio = Dio(BaseOptions(
   //disesuaikan dg URL mockapi.io
-  baseUrl: 'https://662451cb04457d4aaf9c0fb8.mockapi.io/',
+  baseUrl: 'https://6655a34c3c1d3b60293a7592.mockapi.io/',
   //connectTimeout: 5000,
   //receiveTimeout: 3000));
 ));

@@ -22,7 +22,10 @@ class _PoliDetailState extends State<PoliDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Detail Poli")),
+      appBar: AppBar(
+        title: Text("Detail Mobil"),
+        backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
+      ),
       body: StreamBuilder(
         stream: getData(),
         builder: (context, AsyncSnapshot snapshot) {
@@ -42,7 +45,7 @@ class _PoliDetailState extends State<PoliDetail> {
             children: [
               SizedBox(height: 20),
               Text(
-                "Nama Poli : ${snapshot.data.namaPoli}",
+                "Nama Mobil : ${snapshot.data.namaPoli}",
                 style: TextStyle(fontSize: 20),
               ),
               SizedBox(height: 20),
@@ -76,7 +79,8 @@ class _PoliDetailState extends State<PoliDetail> {
     return ElevatedButton(
         onPressed: () {
           AlertDialog alertDialog = AlertDialog(
-            content: const Text("Yakin ingin menghapus data ini?"),
+            content:
+                const Text("Apakah Anda Yakin ingin menghapus data mobil ini?"),
             actions: [
               //tombol ya
               StreamBuilder(
