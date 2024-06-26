@@ -10,7 +10,7 @@ Future<void> main() async {
   print(token);
 
   runApp(MaterialApp(
-    title: "Klinik APP",
+    title: "Showroom Fastmobilindo",
     debugShowCheckedModeBanner: false,
     home: token == null ? Login() : Beranda(),
   ));

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:klinik_app_fauzan/ui/poli_form.dart';
 import 'package:klinik_app_fauzan/ui/widget/sidebar.dart';
+import 'poli_page.dart';
 
 // file beranda9b
 class Beranda extends StatelessWidget {
@@ -26,8 +28,86 @@ class Beranda extends StatelessWidget {
           ),
         ],
       ),
+      body: DataMobilDashboard(),
+    );
+  }
+}
+
+class DataMobilDashboard extends StatelessWidget {
+  final List<String> dataMobil = [
+    "Data Mobil",
+    "Pegawai",
+    "Pelanggan",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: 20),
+          Text(
+            'Showroom Fastmobilindo',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 20),
+          Image.network(
+            'https://www.jawapos.com/otomotif/01260138/showroom-mobil-dari-seluruh-eropa-di-italia-dan-spanyol-tutup', // Ganti URL ini dengan URL gambar mobil Anda
+            height: 200,
+          ),
+          SizedBox(height: 20),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.all(16.0),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, // Number of columns
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
+            ),
+            itemCount: dataMobil.length,
+            itemBuilder: (context, index) {
+              return Card(
+                color: Colors.red,
+                child: InkWell(
+                  onTap: () {
+                    // Action to be performed when the card is tapped
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PoliPage()));
+                  },
+                  child: Center(
+                    child: Text(
+                      dataMobil[index],
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DetailPage extends StatelessWidget {
+  final String mobil;
+
+  const DetailPage({Key? key, required this.mobil}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(mobil),
+        backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
+      ),
       body: Center(
-        child: Text("Selamat Datang di beranda"),
+        child: Text(
+          'Detail informasi tentang $mobil',
+          style: TextStyle(fontSize: 18),
+        ),
       ),
     );
   }
