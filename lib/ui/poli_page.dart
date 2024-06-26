@@ -37,13 +37,6 @@ class _PoliPageState extends State<PoliPage> {
               );
             },
           ),
-          GestureDetector(
-            child: const Icon(Icons.add),
-            onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => PoliForm()));
-            },
-          )
         ],
       ),
       body: StreamBuilder(
@@ -69,6 +62,15 @@ class _PoliPageState extends State<PoliPage> {
             },
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PoliForm()));
+        },
+        icon: const Icon(Icons.add),
+        label: const Text("Tambah Mobil"),
+        backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
       ),
     );
   }
