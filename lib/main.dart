@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'ui/poli_page.dart';
+import 'model/pelanggan.dart';
 import 'helpers/user_info.dart';
 import 'ui/beranda.dart';
 import 'ui/login.dart';

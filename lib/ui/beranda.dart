@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:klinik_app_fauzan/model/poli.dart';
-import 'package:klinik_app_fauzan/ui/pelanggan.dart';
+import 'package:klinik_app_fauzan/ui/pelanggan_page.dart';
 import 'package:klinik_app_fauzan/ui/poli_form.dart';
 import 'package:klinik_app_fauzan/ui/widget/sidebar.dart';
 import 'poli_page.dart';

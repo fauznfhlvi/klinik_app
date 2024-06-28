@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:klinik_app_fauzan/model/poli.dart';
+import 'package:klinik_app_fauzan/model/pelanggan.dart';
 import 'package:klinik_app_fauzan/ui/pelanggan_detail.dart';
-import 'poli_detail.dart';
-import '../service/poli_service.dart';
+import 'pelanggan_detail.dart';
+import '../service/pelanggan_service.dart';
 //file poliform12a
 
 class PelangganForm extends StatefulWidget {
@@ -14,7 +14,7 @@ class PelangganForm extends StatefulWidget {
 
 class _PelangganFormState extends State<PelangganForm> {
   final _formKey = GlobalKey<FormState>();
-  final _namaPoliCtrl = TextEditingController();
+  final _namaPelangganCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,29 +27,34 @@ class _PelangganFormState extends State<PelangganForm> {
         child: Form(
           key: _formKey,
           child: Column(
-            children: [_fieldNamaPoli(), SizedBox(height: 20), _tombolSimpan()],
+            children: [
+              _fieldNamaPelanggan(),
+              SizedBox(height: 20),
+              _tombolSimpan()
+            ],
           ),
         ),
       ),
     );
   }
 
-  _fieldNamaPoli() {
+  _fieldNamaPelanggan() {
     return TextField(
       decoration: const InputDecoration(labelText: "Nama Pelanggan"),
-      controller: _namaPoliCtrl,
+      controller: _namaPelangganCtrl,
     );
   }
 
   _tombolSimpan() {
     return ElevatedButton(
         onPressed: () async {
-          Poli poli = new Poli(namaPoli: _namaPoliCtrl.text);
-          await PoliService().simpan(poli).then((value) {
+          Pelanggan pelanggan =
+              new Pelanggan(namaPelanggan: _namaPelangganCtrl.text);
+          await PelangganService().simpan(pelanggan).then((value) {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => PelangganDetail(poli: value)));
+                    builder: (context) => PelangganDetail(pelanggan: value)));
           });
         },
         child: const Text("Simpan"));

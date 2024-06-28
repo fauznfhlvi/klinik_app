@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import '../model/poli.dart';
+import 'package:klinik_app_fauzan/ui/pelanggan_form.dart';
+import 'package:klinik_app_fauzan/model/pelanggan.dart';
 import 'pelanggan_update_form.dart';
-import 'pelanggan.dart';
-import '../service/poli_service.dart';
+import '/model/pelanggan.dart';
+import '../service/pelanggan_service.dart';
 
 class PelangganDetail extends StatefulWidget {
-  final Poli poli;
+  final Pelanggan pelanggan;
 
-  const PelangganDetail({super.key, required this.poli});
+  const PelangganDetail({super.key, required this.pelanggan});
 
   @override
   State<PelangganDetail> createState() => _PelangganDetailState();
 }
 
 class _PelangganDetailState extends State<PelangganDetail> {
-  Stream<Poli> getData() async* {
-    Poli data = await PoliService().getById(widget.poli.id.toString());
+  Stream<Pelanggan> getData() async* {
+    Pelanggan data =
+        await PelangganService().getById(widget.pelanggan.id.toString());
     yield data;
   }
 
@@ -45,7 +47,7 @@ class _PelangganDetailState extends State<PelangganDetail> {
             children: [
               SizedBox(height: 20),
               Text(
-                "Nama Mobil : ${snapshot.data.namaPoli}",
+                "Nama Mobil : ${snapshot.data.namaPelanggan}",
                 style: TextStyle(fontSize: 20),
               ),
               SizedBox(height: 20),
@@ -69,7 +71,7 @@ class _PelangganDetailState extends State<PelangganDetail> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          PelangganUpdateForm(poli: snapshot.data)));
+                          PelangganUpdateForm(pelanggan: snapshot.data)));
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
             child: const Text("Ubah")));
@@ -87,14 +89,14 @@ class _PelangganDetailState extends State<PelangganDetail> {
                   stream: getData(),
                   builder: (context, AsyncSnapshot snapshot) => ElevatedButton(
                         onPressed: () async {
-                          await PoliService()
+                          await PelangganService()
                               .hapus(snapshot.data)
                               .then((value) {
                             Navigator.pop(context);
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Pelanggan()));
+                                    builder: (context) => PelangganForm()));
                           });
                         },
                         child: Text("Ya"),

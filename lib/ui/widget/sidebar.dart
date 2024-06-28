@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:klinik_app_fauzan/ui/mobil.dart';
-import 'package:klinik_app_fauzan/ui/pelanggan.dart';
+import 'package:klinik_app_fauzan/ui/pelanggan_page.dart';
 import '/ui/beranda.dart';
 import '/ui/login.dart';
 import '/ui/poli_page.dart';

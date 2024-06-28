@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:klinik_app_fauzan/model/poli.dart';
+import 'package:flutter/widgets.dart';
+import '/model/pelanggan.dart';
 import 'package:klinik_app_fauzan/ui/pelanggan_form.dart';
-import 'pelanggan_detail.dart';
 import 'pelanggan_item.dart';
 import 'package:klinik_app_fauzan/ui/widget/sidebar.dart';
-import '../service/poli_service.dart';
+import '../service/pelanggan_service.dart';
 
 class Pelanggan extends StatefulWidget {
   const Pelanggan({super.key});
@@ -14,8 +14,8 @@ class Pelanggan extends StatefulWidget {
 }
 
 class _PelangganState extends State<Pelanggan> {
-  Stream<List<Poli>> getList() async* {
-    List<Poli> data = await PoliService().listData();
+  Stream<List<Pelanggan>> getList() async* {
+    List<Pelanggan> data = await PelangganService().listData();
     yield data;
   }
 
@@ -33,7 +33,7 @@ class _PelangganState extends State<Pelanggan> {
               // Action to be performed when the search icon is pressed
               showSearch(
                 context: context,
-                delegate: PoliSearchDelegate(),
+                delegate: PelangganSearchDelegate(),
               );
             },
           ),
@@ -58,7 +58,7 @@ class _PelangganState extends State<Pelanggan> {
           return ListView.builder(
             itemCount: snapshot.data.length,
             itemBuilder: (context, index) {
-              return PelangganItem(poli: snapshot.data[index]);
+              return PelangganItem(pelanggan: snapshot.data[index]);
             },
           );
         },
@@ -76,7 +76,7 @@ class _PelangganState extends State<Pelanggan> {
   }
 }
 
-class PoliSearchDelegate extends SearchDelegate {
+class PelangganSearchDelegate extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
