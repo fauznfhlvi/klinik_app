@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:klinik_app_fauzan/model/poli.dart';
+import 'package:klinik_app_fauzan/ui/pelanggan.dart';
 import 'package:klinik_app_fauzan/ui/poli_form.dart';
 import 'package:klinik_app_fauzan/ui/widget/sidebar.dart';
 import 'poli_page.dart';
@@ -35,9 +37,9 @@ class Beranda extends StatelessWidget {
 
 class DataMobilDashboard extends StatelessWidget {
   final List<String> dataMobil = [
-    "Data Mobil",
-    "Pegawai",
-    "Pelanggan",
+    "DATA MOBIL",
+    "PEGAWAI",
+    "PELANGGAN",
   ];
 
   @override
@@ -52,18 +54,23 @@ class DataMobilDashboard extends StatelessWidget {
           ),
           SizedBox(height: 20),
           Image.network(
-            'https://www.jawapos.com/otomotif/01260138/showroom-mobil-dari-seluruh-eropa-di-italia-dan-spanyol-tutup', // Ganti URL ini dengan URL gambar mobil Anda
+            'https://www.canva.com/design/DAGE2c5i0Wc/XgEMiZjBzPwGf8kd7Y5QTA/edit?utm_content=DAGE2c5i0Wc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton', // Ganti URL ini dengan URL gambar mobil Anda
             height: 200,
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace? stackTrace) {
+              return Text(
+                  'Gagal memuat gambar'); // Pesan error jika gambar gagal dimuat
+            },
           ),
           SizedBox(height: 20),
           GridView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(100.0),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3, // Number of columns
-              crossAxisSpacing: 16.0,
-              mainAxisSpacing: 16.0,
+              crossAxisSpacing: 100.0,
+              mainAxisSpacing: 100.0,
             ),
             itemCount: dataMobil.length,
             itemBuilder: (context, index) {
@@ -72,13 +79,33 @@ class DataMobilDashboard extends StatelessWidget {
                 child: InkWell(
                   onTap: () {
                     // Action to be performed when the card is tapped
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PoliPage()));
+                    switch (index) {
+                      case 0: // DATA MOBIL
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PoliPage()));
+                        break;
+                      case 1: // PEGAWAI
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PoliPage()));
+                        break;
+                      case 2: // PELANGGAN
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Pelanggan()));
+                        break;
+                      default:
+                        break;
+                    }
                   },
                   child: Center(
                     child: Text(
                       dataMobil[index],
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ),

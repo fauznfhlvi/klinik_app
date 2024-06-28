@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:klinik_app_fauzan/model/poli.dart';
 import 'package:klinik_app_fauzan/ui/poli_form.dart';
+import 'poli_page.dart';
 import 'poli_item.dart';
 import 'package:klinik_app_fauzan/ui/widget/sidebar.dart';
 import '../service/poli_service.dart';
 
-class PoliPage extends StatefulWidget {
-  const PoliPage({super.key});
+class PoliPage1 extends StatefulWidget {
+  const PoliPage1({super.key});
 
   @override
-  State<PoliPage> createState() => _PoliPageState();
+  State<PoliPage1> createState() => _PoliPage1State();
 }
 
-class _PoliPageState extends State<PoliPage> {
+class _PoliPage1State extends State<PoliPage1> {
   Stream<List<Poli>> getList() async* {
     List<Poli> data = await PoliService().listData();
     yield data;
@@ -30,6 +30,7 @@ class _PoliPageState extends State<PoliPage> {
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
+              // Action to be performed when the search icon is pressed
               showSearch(
                 context: context,
                 delegate: PoliSearchDelegate(),
@@ -54,34 +55,11 @@ class _PoliPageState extends State<PoliPage> {
             return const Text('Data Kosong');
           }
 
-          return Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  "SHOWROOM FASTMOBILINDO",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4, // Number of columns in the grid
-                    crossAxisSpacing: 50.0,
-                    mainAxisSpacing: 50.0,
-                    childAspectRatio:
-                        3, // Adjust this to make each item take up more vertical space
-                  ),
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index) {
-                    return PoliItem(poli: snapshot.data[index]);
-                  },
-                ),
-              ),
-            ],
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) {
+              return PoliItem(poli: snapshot.data[index]);
+            },
           );
         },
       ),
@@ -130,6 +108,7 @@ class PoliSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    // You can implement search suggestions here if needed
     return Center(
       child: Text('Search suggestion for: $query'),
     );
