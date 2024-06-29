@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:klinik_app_fauzan/ui/kategori_produk.dart';
 import 'package:klinik_app_fauzan/ui/pelanggan_page.dart';
 import '/ui/beranda.dart';
 import '/ui/login.dart';
@@ -37,7 +36,7 @@ class Sidebar extends StatelessWidget {
             title: Text("Kategori Produk"),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => KategoriProduk()));
+                  MaterialPageRoute(builder: (context) => PelangganPage()));
             },
           ),
           ListTile(
