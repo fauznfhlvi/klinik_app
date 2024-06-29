@@ -50,7 +50,7 @@ class _PoliDetailState extends State<PoliDetail> {
               ),
               SizedBox(height: 20),
               Image.network(
-                'https://bukalapak/gambar-mobil.jpg', // Ganti URL ini dengan URL gambar mobil Anda
+                'https://bukalapak/slide16.jpg', // Ganti URL ini dengan URL gambar mobil Anda
                 height: 200,
                 errorBuilder: (BuildContext context, Object exception,
                     StackTrace? stackTrace) {
