@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:klinik_app_fauzan/ui/kategori_produk.dart';
 import 'package:klinik_app_fauzan/ui/pelanggan_page.dart';
 import '/ui/beranda.dart';
 import '/ui/login.dart';
@@ -32,16 +33,19 @@ class Sidebar extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.people_alt_rounded),
-            title: Text("Pegawai"),
-            onTap: () {},
+            leading: Icon(Icons.key),
+            title: Text("Kategori Produk"),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => KategoriProduk()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.account_box_sharp),
             title: Text("Pelanggan"),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Pelanggan()));
+                  MaterialPageRoute(builder: (context) => PelangganPage()));
             },
           ),
           ListTile(

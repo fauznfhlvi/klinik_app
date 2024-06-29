@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import '/model/pelanggan.dart';
+import 'package:flutter/widgets.dart';
+import 'package:klinik_app_fauzan/ui/kategori_form.dart';
+import '/model/kategori.dart';
 import 'package:klinik_app_fauzan/ui/pelanggan_form.dart';
 import 'pelanggan_item.dart';
 import 'package:klinik_app_fauzan/ui/widget/sidebar.dart';
-import '../service/pelanggan_service.dart';
+import '../service/kategori_service.dart';
 
-class PelangganPage extends StatefulWidget {
-  const PelangganPage({super.key});
+class KategoriProduk extends StatefulWidget {
+  const KategoriProduk({super.key});
 
   @override
-  State<PelangganPage> createState() => _PelangganPageState();
+  State<KategoriProduk> createState() => _KategoriprodukState();
 }
 
-class _PelangganPageState extends State<PelangganPage> {
-  Stream<List<Pelanggan>> getList() async* {
-    List<Pelanggan> data = await PelangganService().listData();
+class _KategoriprodukState extends State<KategoriProduk> {
+  Stream<List<Kategori>> getList() async* {
+    List<Kategori> data = await KategoriService().listData();
     yield data;
   }
 
@@ -24,7 +26,7 @@ class _PelangganPageState extends State<PelangganPage> {
       drawer: Sidebar(),
       appBar: AppBar(
         title: const Text("Data Pelanggan"),
-        backgroundColor: const Color.fromRGBO(237, 5, 63, 0.612),
+        backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
@@ -42,7 +44,7 @@ class _PelangganPageState extends State<PelangganPage> {
         stream: getList(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()));
+            return Text(snapshot.error.toString());
           }
           if (snapshot.connectionState != ConnectionState.done) {
             return const Center(
@@ -51,43 +53,25 @@ class _PelangganPageState extends State<PelangganPage> {
           }
           if (!snapshot.hasData &&
               snapshot.connectionState == ConnectionState.done) {
-            return const Center(child: Text('Data Kosong'));
+            return const Text('Data Kosong');
           }
 
-          return Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  "Daftar Pelanggan",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(0, 0, 0, 1),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index) {
-                    return PelangganItem(pelanggan: snapshot.data[index]);
-                  },
-                ),
-              ),
-            ],
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) {
+              return PelangganItem(pelanggan: snapshot.data[index]);
+            },
           );
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const PelangganForm()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => KategoriForm()));
         },
         icon: const Icon(Icons.add),
         label: const Text("Tambah Pelanggan"),
-        backgroundColor: const Color.fromRGBO(237, 5, 63, 0.612),
+        backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
       ),
     );
   }

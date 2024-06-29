@@ -96,7 +96,7 @@ class DataMobilDashboard extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Pelanggan()));
+                                builder: (context) => PelangganPage()));
                         break;
                       default:
                         break;

@@ -37,7 +37,7 @@ class _PelangganUpdateFormState extends State<PelangganUpdateForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Ubah Mobil"),
+        title: const Text("Ubah Pelanggan"),
         backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
       ),
       body: SingleChildScrollView(
@@ -57,7 +57,7 @@ class _PelangganUpdateFormState extends State<PelangganUpdateForm> {
 
   _fieldNamaPelanggan() {
     return TextField(
-      decoration: const InputDecoration(labelText: "Nama Mobil"),
+      decoration: const InputDecoration(labelText: "Nama Pelanggan"),
       controller: _namaPelangganCtrl,
     );
   }
