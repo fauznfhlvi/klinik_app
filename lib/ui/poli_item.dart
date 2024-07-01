@@ -18,8 +18,8 @@ class PoliItem extends StatelessWidget {
       },
       child: Card(
         child: ListTile(
-          leading: Icon(Icons.directions_car), // Icon representing a car
-          title: Text("${poli.namaPoli}"),
+          leading: const Icon(Icons.directions_car), // Icon representing a car
+          title: Text(poli.namaPoli),
         ),
       ),
     );

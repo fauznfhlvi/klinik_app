@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:klinik_app_fauzan/ui/pelanggan_detail.dart';
 import 'package:klinik_app_fauzan/model/pelanggan.dart';
-import 'pelanggan_detail.dart';
 import '../service/pelanggan_service.dart';
 
 class PelangganUpdateForm extends StatefulWidget {
@@ -17,20 +16,23 @@ class PelangganUpdateForm extends StatefulWidget {
 class _PelangganUpdateFormState extends State<PelangganUpdateForm> {
   final _formKey = GlobalKey<FormState>();
   final _namaPelangganCtrl = TextEditingController();
-
-  Future<Pelanggan> getData() async {
-    Pelanggan data =
-        await PelangganService().getById(widget.pelanggan.id.toString());
-    setState(() {
-      _namaPelangganCtrl.text = data.namaPelanggan;
-    });
-    return data;
-  }
+  final _imageNameCtrl = TextEditingController();
+  final _alamatCtrl = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    getData();
+    _initializeData();
+  }
+
+  Future<void> _initializeData() async {
+    Pelanggan data =
+        await PelangganService().getById(widget.pelanggan.id.toString());
+    setState(() {
+      _namaPelangganCtrl.text = data.namaPelanggan;
+      _imageNameCtrl.text = data.imageName;
+      _alamatCtrl.text = data.alamat;
+    });
   }
 
   @override
@@ -43,12 +45,19 @@ class _PelangganUpdateFormState extends State<PelangganUpdateForm> {
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              _fieldNamaPelanggan(),
-              SizedBox(height: 20),
-              _tombolSimpan()
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                _fieldNamaPelanggan(),
+                SizedBox(height: 20),
+                _fieldImageName(),
+                SizedBox(height: 20),
+                _fieldAlamat(),
+                SizedBox(height: 20),
+                _tombolSimpan()
+              ],
+            ),
           ),
         ),
       ),
@@ -56,25 +65,64 @@ class _PelangganUpdateFormState extends State<PelangganUpdateForm> {
   }
 
   _fieldNamaPelanggan() {
-    return TextField(
+    return TextFormField(
       decoration: const InputDecoration(labelText: "Nama Pelanggan"),
       controller: _namaPelangganCtrl,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Nama Pelanggan tidak boleh kosong';
+        }
+        return null;
+      },
+    );
+  }
+
+  _fieldImageName() {
+    return TextFormField(
+      decoration: const InputDecoration(labelText: "Nama Gambar"),
+      controller: _imageNameCtrl,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Nama Gambar tidak boleh kosong';
+        }
+        return null;
+      },
+    );
+  }
+
+  _fieldAlamat() {
+    return TextFormField(
+      decoration: const InputDecoration(labelText: "Email"),
+      controller: _alamatCtrl,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Email tidak boleh kosong';
+        }
+        return null;
+      },
     );
   }
 
   _tombolSimpan() {
     return ElevatedButton(
         onPressed: () async {
-          Pelanggan pelanggan =
-              new Pelanggan(namaPelanggan: _namaPelangganCtrl.text);
-          String id = widget.pelanggan.id.toString();
-          await PelangganService().ubah(pelanggan, id).then((value) {
-            Navigator.pop(context);
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PelangganDetail(pelanggan: value)));
-          });
+          if (_formKey.currentState?.validate() ?? false) {
+            Pelanggan pelanggan = Pelanggan(
+              id: widget.pelanggan.id,
+              namaPelanggan: _namaPelangganCtrl.text,
+              imageName: _imageNameCtrl.text,
+              alamat: _alamatCtrl.text,
+            );
+            await PelangganService()
+                .ubah(pelanggan, pelanggan.id)
+                .then((value) {
+              Navigator.pop(context);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PelangganDetail(pelanggan: value)));
+            });
+          }
         },
         child: const Text("Simpan"));
   }

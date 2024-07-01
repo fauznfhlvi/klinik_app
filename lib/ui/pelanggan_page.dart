@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:klinik_app_fauzan/ui/pelanggan_detail.dart';
 import '/model/pelanggan.dart';
 import 'package:klinik_app_fauzan/ui/pelanggan_form.dart';
 import 'pelanggan_item.dart';
@@ -94,6 +95,16 @@ class _PelangganPageState extends State<PelangganPage> {
 }
 
 class PelangganSearchDelegate extends SearchDelegate {
+  List<Pelanggan> pelanggans = [];
+
+  PelangganSearchDelegate() {
+    _loadPolies();
+  }
+
+  Future<void> _loadPolies() async {
+    pelanggans = await PelangganService().listData();
+  }
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -101,6 +112,7 @@ class PelangganSearchDelegate extends SearchDelegate {
         icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
+          showSuggestions(context);
         },
       ),
     ];
@@ -118,16 +130,48 @@ class PelangganSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Center(
-      child: Text('Search result for: $query'),
+    final results = pelanggans
+        .where((Pelanggan) =>
+            Pelanggan.namaPelanggan.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: results.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(results[index].namaPelanggan),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PelangganDetail(pelanggan: results[index]),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // You can implement search suggestions here if needed
-    return Center(
-      child: Text('Search suggestion for: $query'),
+    final suggestions = pelanggans
+        .where((pelanggan) =>
+            pelanggan.namaPelanggan.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(suggestions[index].namaPelanggan),
+          onTap: () {
+            query = suggestions[index].namaPelanggan;
+            showResults(context);
+          },
+        );
+      },
     );
   }
 }

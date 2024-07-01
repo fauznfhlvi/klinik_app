@@ -5,23 +5,21 @@ import 'package:klinik_app_fauzan/ui/poli_form.dart';
 import 'package:klinik_app_fauzan/ui/widget/sidebar.dart';
 import 'poli_page.dart';
 
-// file beranda9b
 class Beranda extends StatelessWidget {
   const Beranda({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Sidebar(),
+      drawer: const Sidebar(),
       appBar: AppBar(
-        title: Text("Beranda"),
-        backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
+        title: const Text("Beranda"),
+        backgroundColor: const Color.fromRGBO(237, 5, 63, 0.612),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
-            iconSize: 18.0, // Set the icon size
+            icon: const Icon(Icons.search),
+            iconSize: 18.0,
             onPressed: () {
-              // Action to be performed when the search icon is pressed
               showSearch(
                 context: context,
                 delegate: CustomSearchDelegate(),
@@ -47,30 +45,30 @@ class DataMobilDashboard extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 20),
-          Text(
+          const SizedBox(height: 20),
+          const Text(
             'Showroom Fastmobilindo',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 20),
-          Image.network(
-            'https://www.canva.com/design/DAGE2c5i0Wc/XgEMiZjBzPwGf8kd7Y5QTA/edit?utm_content=DAGE2c5i0Wc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton', // Ganti URL ini dengan URL gambar mobil Anda
-            height: 200,
+          const SizedBox(height: 20),
+          Image.asset(
+            'assets/images/beranda.jpg', // Replace with your image path
+            height: 500,
             errorBuilder: (BuildContext context, Object exception,
                 StackTrace? stackTrace) {
-              return Text(
-                  'Gagal memuat gambar'); // Pesan error jika gambar gagal dimuat
+              return const Text(
+                  'Gagal memuat gambar'); // Error message if the image fails to load
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           GridView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.all(100.0),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, // Number of columns
-              crossAxisSpacing: 100.0,
-              mainAxisSpacing: 100.0,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(16.0),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
             ),
             itemCount: dataMobil.length,
             itemBuilder: (context, index) {
@@ -78,14 +76,8 @@ class DataMobilDashboard extends StatelessWidget {
                 color: Colors.red,
                 child: InkWell(
                   onTap: () {
-                    // Action to be performed when the card is tapped
                     switch (index) {
                       case 0: // DATA MOBIL
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PoliPage()));
-                        break;
                       case 1: // PEGAWAI
                         Navigator.push(
                             context,
@@ -105,7 +97,7 @@ class DataMobilDashboard extends StatelessWidget {
                   child: Center(
                     child: Text(
                       dataMobil[index],
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -128,12 +120,12 @@ class DetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(mobil),
-        backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
+        backgroundColor: const Color.fromRGBO(237, 5, 63, 0.612),
       ),
       body: Center(
         child: Text(
           'Detail informasi tentang $mobil',
-          style: TextStyle(fontSize: 18),
+          style: const TextStyle(fontSize: 18),
         ),
       ),
     );
@@ -145,7 +137,7 @@ class CustomSearchDelegate extends SearchDelegate {
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-        icon: Icon(Icons.clear),
+        icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
         },
@@ -156,7 +148,7 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
       onPressed: () {
         close(context, null);
       },
@@ -172,7 +164,6 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // Implement search suggestions here if needed
     return Center(
       child: Text('Search suggestion for: $query'),
     );

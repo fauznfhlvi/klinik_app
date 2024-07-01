@@ -5,6 +5,7 @@ import 'package:klinik_app_fauzan/ui/poli_form.dart';
 import 'poli_item.dart';
 import 'package:klinik_app_fauzan/ui/widget/sidebar.dart';
 import '../service/poli_service.dart';
+import 'poli_detail.dart';
 
 class PoliPage extends StatefulWidget {
   const PoliPage({super.key});
@@ -22,10 +23,10 @@ class _PoliPageState extends State<PoliPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Sidebar(),
+      drawer: const Sidebar(),
       appBar: AppBar(
         title: const Text("Data Mobil"),
-        backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
+        backgroundColor: const Color.fromRGBO(237, 5, 63, 0.612),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
@@ -38,20 +39,19 @@ class _PoliPageState extends State<PoliPage> {
           ),
         ],
       ),
-      body: StreamBuilder(
+      body: StreamBuilder<List<Poli>>(
         stream: getList(),
-        builder: (context, AsyncSnapshot snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
+            return Center(child: Text(snapshot.error.toString()));
           }
-          if (snapshot.connectionState != ConnectionState.done) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (!snapshot.hasData &&
-              snapshot.connectionState == ConnectionState.done) {
-            return const Text('Data Kosong');
+          if (!snapshot.hasData) {
+            return const Center(child: Text('Data Kosong'));
           }
 
           return Column(
@@ -69,15 +69,15 @@ class _PoliPageState extends State<PoliPage> {
               Expanded(
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4, // Number of columns in the grid
+                    crossAxisCount: 4, // Jumlah kolom dalam grid
                     crossAxisSpacing: 50.0,
                     mainAxisSpacing: 50.0,
                     childAspectRatio:
-                        3, // Adjust this to make each item take up more vertical space
+                        3, // Sesuaikan ini untuk membuat setiap item mengambil lebih banyak ruang vertikal
                   ),
-                  itemCount: snapshot.data.length,
+                  itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
-                    return PoliItem(poli: snapshot.data[index]);
+                    return PoliItem(poli: snapshot.data![index]);
                   },
                 ),
               ),
@@ -92,13 +92,23 @@ class _PoliPageState extends State<PoliPage> {
         },
         icon: const Icon(Icons.add),
         label: const Text("Tambah Mobil"),
-        backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
+        backgroundColor: const Color.fromRGBO(237, 5, 63, 0.612),
       ),
     );
   }
 }
 
 class PoliSearchDelegate extends SearchDelegate {
+  List<Poli> polies = [];
+
+  PoliSearchDelegate() {
+    _loadPolies();
+  }
+
+  Future<void> _loadPolies() async {
+    polies = await PoliService().listData();
+  }
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -106,6 +116,7 @@ class PoliSearchDelegate extends SearchDelegate {
         icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
+          showSuggestions(context);
         },
       ),
     ];
@@ -123,15 +134,47 @@ class PoliSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Center(
-      child: Text('Search result for: $query'),
+    final results = polies
+        .where(
+            (poli) => poli.namaPoli.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: results.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(results[index].namaPoli),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PoliDetail(poli: results[index]),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Center(
-      child: Text('Search suggestion for: $query'),
+    final suggestions = polies
+        .where(
+            (poli) => poli.namaPoli.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(suggestions[index].namaPoli),
+          onTap: () {
+            query = suggestions[index].namaPoli;
+            showResults(context);
+          },
+        );
+      },
     );
   }
 }

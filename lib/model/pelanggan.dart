@@ -1,11 +1,31 @@
 class Pelanggan {
-  String? id;
+  String id;
   String namaPelanggan;
+  String imageName;
+  String alamat;
 
-  Pelanggan({this.id, required this.namaPelanggan});
+  Pelanggan({
+    required this.id,
+    required this.namaPelanggan,
+    required this.imageName,
+    required this.alamat,
+  });
 
-  factory Pelanggan.fromJson(Map<String, dynamic> json) =>
-      Pelanggan(id: json["id"], namaPelanggan: json["nama_pelanggan"]);
+  factory Pelanggan.fromJson(Map<String, dynamic> json) {
+    return Pelanggan(
+      id: json['id'],
+      namaPelanggan: json['nama_pelanggan'] ?? '',
+      imageName: json['imageName'] ?? '',
+      alamat: json['alamat'] ?? '',
+    );
+  }
 
-  Map<String, dynamic> toJson() => {"nama_pelanggan": namaPelanggan};
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nama_pelanggan': namaPelanggan,
+      'imageName': imageName,
+      'alamat': alamat,
+    };
+  }
 }

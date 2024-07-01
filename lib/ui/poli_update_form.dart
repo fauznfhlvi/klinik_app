@@ -15,13 +15,16 @@ class PoliUpdateForm extends StatefulWidget {
 class _PoliUpdateFormState extends State<PoliUpdateForm> {
   final _formKey = GlobalKey<FormState>();
   final _namaPoliCtrl = TextEditingController();
+  final _imageNameCtrl = TextEditingController();
+  final _hargaCtrl = TextEditingController();
 
-  Future<Poli> getData() async {
-    Poli data = await PoliService().getById(widget.poli.id.toString());
+  Future<void> getData() async {
+    Poli data = await PoliService().getById(widget.poli.id);
     setState(() {
       _namaPoliCtrl.text = data.namaPoli;
+      _imageNameCtrl.text = data.imageName;
+      _hargaCtrl.text = data.harga;
     });
-    return data;
   }
 
   @override
@@ -35,39 +38,91 @@ class _PoliUpdateFormState extends State<PoliUpdateForm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Ubah Mobil"),
-        backgroundColor: Color.fromRGBO(237, 5, 63, 0.612),
+        backgroundColor: const Color.fromRGBO(237, 5, 63, 0.612),
       ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [_fieldNamaPoli(), SizedBox(height: 20), _tombolSimpan()],
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                _fieldNamaPoli(),
+                const SizedBox(height: 20),
+                _fieldImageName(),
+                const SizedBox(height: 20),
+                _fieldHarga(),
+                const SizedBox(height: 20),
+                _tombolSimpan(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  _fieldNamaPoli() {
-    return TextField(
+  Widget _fieldNamaPoli() {
+    return TextFormField(
       decoration: const InputDecoration(labelText: "Nama Mobil"),
       controller: _namaPoliCtrl,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Nama mobil tidak boleh kosong';
+        }
+        return null;
+      },
     );
   }
 
-  _tombolSimpan() {
+  Widget _fieldImageName() {
+    return TextFormField(
+      decoration: const InputDecoration(labelText: "Nama Gambar"),
+      controller: _imageNameCtrl,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Nama gambar tidak boleh kosong';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _fieldHarga() {
+    return TextFormField(
+      decoration: const InputDecoration(labelText: "Harga"),
+      controller: _hargaCtrl,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Harga tidak boleh kosong';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _tombolSimpan() {
     return ElevatedButton(
-        onPressed: () async {
-          Poli poli = new Poli(namaPoli: _namaPoliCtrl.text);
-          String id = widget.poli.id.toString();
-          await PoliService().ubah(poli, id).then((value) {
+      onPressed: () async {
+        if (_formKey.currentState?.validate() ?? false) {
+          Poli poli = Poli(
+            id: widget.poli.id,
+            namaPoli: _namaPoliCtrl.text,
+            imageName: _imageNameCtrl.text,
+            harga: _hargaCtrl.text,
+          );
+          await PoliService().ubah(poli, widget.poli.id).then((value) {
             Navigator.pop(context);
             Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => PoliDetail(poli: value)));
+              context,
+              MaterialPageRoute(
+                builder: (context) => PoliDetail(poli: value),
+              ),
+            );
           });
-        },
-        child: const Text("Simpan"));
+        }
+      },
+      child: const Text("Simpan"),
+    );
   }
 }
