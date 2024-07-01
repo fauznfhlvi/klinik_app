@@ -16,7 +16,6 @@ class _PoliFormState extends State<PoliForm> {
   final _imageNameCtrl = TextEditingController();
   final _hargaCtrl =
       TextEditingController(); // Tambahkan controller untuk harga
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

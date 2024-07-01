@@ -26,7 +26,7 @@ class _PoliDetailState extends State<PoliDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Detail Poli"),
+        title: const Text("Detail Mobil"),
         backgroundColor: const Color.fromRGBO(237, 5, 63, 0.612),
       ),
       body: FutureBuilder<Poli>(
@@ -64,7 +64,7 @@ class _PoliDetailState extends State<PoliDetail> {
               ),
               const SizedBox(height: 20),
               Text(
-                "${poli?.namaPoli ?? ''} merupakan mobil dengan mesin 1200 cc dengan di bandrol harga ${poli?.harga ?? ''}",
+                "${poli?.namaPoli ?? ''}, di bandrol dengan harga ${poli?.harga ?? ''}",
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

@@ -32,14 +32,6 @@ class Sidebar extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.key),
-            title: Text("Kategori Produk"),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => PelangganPage()));
-            },
-          ),
-          ListTile(
             leading: Icon(Icons.account_box_sharp),
             title: Text("Pelanggan"),
             onTap: () {

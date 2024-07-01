@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:klinik_app_fauzan/model/poli.dart';
+import 'package:klinik_app_fauzan/model/pelanggan.dart';
 import 'package:klinik_app_fauzan/ui/pelanggan_page.dart';
 import 'package:klinik_app_fauzan/ui/poli_form.dart';
 import 'package:klinik_app_fauzan/ui/widget/sidebar.dart';
 import 'poli_page.dart';
+import 'package:klinik_app_fauzan/ui/pelanggan_detail.dart';
+import '../service/poli_service.dart';
+import 'poli_detail.dart';
+import '../service/pelanggan_service.dart';
 
-class Beranda extends StatelessWidget {
+class Beranda extends StatefulWidget {
   const Beranda({super.key});
+
+  @override
+  _BerandaState createState() => _BerandaState();
+}
+
+class _BerandaState extends State<Beranda> {
+  String _selectedSearchType = 'Poli'; // Default search type
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +28,30 @@ class Beranda extends StatelessWidget {
         title: const Text("Beranda"),
         backgroundColor: const Color.fromRGBO(237, 5, 63, 0.612),
         actions: [
+          DropdownButton<String>(
+            value: _selectedSearchType,
+            onChanged: (String? newValue) {
+              setState(() {
+                _selectedSearchType = newValue!;
+              });
+            },
+            items: <String>['Poli', 'Pelanggan']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
           IconButton(
             icon: const Icon(Icons.search),
             iconSize: 18.0,
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: CustomSearchDelegate(),
+                delegate: _selectedSearchType == 'Poli'
+                    ? PoliSearchDelegate()
+                    : PelangganSearchDelegate(),
               );
             },
           ),
@@ -36,7 +65,6 @@ class Beranda extends StatelessWidget {
 class DataMobilDashboard extends StatelessWidget {
   final List<String> dataMobil = [
     "DATA MOBIL",
-    "PEGAWAI",
     "PELANGGAN",
   ];
 
@@ -60,15 +88,15 @@ class DataMobilDashboard extends StatelessWidget {
                   'Gagal memuat gambar'); // Error message if the image fails to load
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 5),
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(300.0),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 16.0,
-              mainAxisSpacing: 16.0,
+              crossAxisCount: 2,
+              crossAxisSpacing: 100.0,
+              mainAxisSpacing: 100.0,
             ),
             itemCount: dataMobil.length,
             itemBuilder: (context, index) {
@@ -78,19 +106,16 @@ class DataMobilDashboard extends StatelessWidget {
                   onTap: () {
                     switch (index) {
                       case 0: // DATA MOBIL
-                      case 1: // PEGAWAI
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => PoliPage()));
                         break;
-                      case 2: // PELANGGAN
+                      case 1: // PEGAWAI
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => PelangganPage()));
-                        break;
-                      default:
                         break;
                     }
                   },
@@ -132,7 +157,17 @@ class DetailPage extends StatelessWidget {
   }
 }
 
-class CustomSearchDelegate extends SearchDelegate {
+class PoliSearchDelegate extends SearchDelegate {
+  List<Poli> polies = [];
+
+  PoliSearchDelegate() {
+    _loadPolies();
+  }
+
+  Future<void> _loadPolies() async {
+    polies = await PoliService().listData();
+  }
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -140,6 +175,7 @@ class CustomSearchDelegate extends SearchDelegate {
         icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
+          showSuggestions(context);
         },
       ),
     ];
@@ -157,15 +193,129 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Center(
-      child: Text('Search result for: $query'),
+    final results = polies
+        .where(
+            (poli) => poli.namaPoli.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: results.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(results[index].namaPoli),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PoliDetail(poli: results[index]),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return Center(
-      child: Text('Search suggestion for: $query'),
+    final suggestions = polies
+        .where(
+            (poli) => poli.namaPoli.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(suggestions[index].namaPoli),
+          onTap: () {
+            query = suggestions[index].namaPoli;
+            showResults(context);
+          },
+        );
+      },
+    );
+  }
+}
+
+class PelangganSearchDelegate extends SearchDelegate {
+  List<Pelanggan> pelanggans = [];
+
+  PelangganSearchDelegate() {
+    _loadPelanggans();
+  }
+
+  Future<void> _loadPelanggans() async {
+    pelanggans = await PelangganService().listData();
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: const Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+          showSuggestions(context);
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    final results = pelanggans
+        .where((pelanggan) =>
+            pelanggan.namaPelanggan.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: results.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(results[index].namaPelanggan),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    PelangganDetail(pelanggan: results[index]),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final suggestions = pelanggans
+        .where((pelanggan) =>
+            pelanggan.namaPelanggan.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(suggestions[index].namaPelanggan),
+          onTap: () {
+            query = suggestions[index].namaPelanggan;
+            showResults(context);
+          },
+        );
+      },
     );
   }
 }

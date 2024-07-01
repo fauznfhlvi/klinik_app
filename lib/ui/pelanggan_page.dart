@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:klinik_app_fauzan/ui/pelanggan_detail.dart';
 import '/model/pelanggan.dart';
 import 'package:klinik_app_fauzan/ui/pelanggan_form.dart';
+import 'package:klinik_app_fauzan/ui/beranda.dart';
+import 'package:klinik_app_fauzan/ui/poli_page.dart';
 import 'pelanggan_item.dart';
 import 'package:klinik_app_fauzan/ui/widget/sidebar.dart';
 import '../service/pelanggan_service.dart';
@@ -57,17 +59,75 @@ class _PelangganPageState extends State<PelangganPage> {
 
           return Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  "Daftar Pelanggan",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(0, 0, 0, 1),
+              Stack(
+                children: [
+                  Positioned(
+                    left: 0,
+                    child: IconButton(
+                      icon: const Icon(Icons.home),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Beranda(),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                  textAlign: TextAlign.center,
-                ),
+                  Positioned(
+                    left: 90,
+                    child: IconButton(
+                      icon: const Icon(Icons.car_rental_rounded),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PoliPage(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    left: 15,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: const Text(
+                        "BERANDA",
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 105,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: const Text(
+                        "DATA MOBIL",
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: const Text(
+                        "DAFTAR PELANGGAN",
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Expanded(
                 child: ListView.builder(

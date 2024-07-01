@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:klinik_app_fauzan/model/poli.dart';
+import 'package:klinik_app_fauzan/ui/pelanggan_page.dart';
 import 'package:klinik_app_fauzan/ui/poli_form.dart';
+import 'package:klinik_app_fauzan/ui/beranda.dart';
 import 'poli_item.dart';
 import 'package:klinik_app_fauzan/ui/widget/sidebar.dart';
 import '../service/poli_service.dart';
@@ -56,15 +57,75 @@ class _PoliPageState extends State<PoliPage> {
 
           return Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  "SHOWROOM FASTMOBILINDO",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+              Stack(
+                children: [
+                  Positioned(
+                    left: 0,
+                    child: IconButton(
+                      icon: const Icon(Icons.home),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Beranda(),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
+                  Positioned(
+                    left: 90,
+                    child: IconButton(
+                      icon: const Icon(Icons.account_box_sharp),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PelangganPage(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    left: 15,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: const Text(
+                        "BERANDA",
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 105,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: const Text(
+                        "PELANGGAN",
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: const Text(
+                        "SHOWROOM FASTMOBILINDO",
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Expanded(
                 child: GridView.builder(
